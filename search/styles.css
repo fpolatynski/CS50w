@@ -1,0 +1,43 @@
+
+body {
+    background-color: #1f2123;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    display: inline;
+    float: right;
+}
+
+a {
+    padding-left: 20px;
+    padding-right: 20px;
+    color:white;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration-line: underline;
+}
+
+.search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+input[type=text] {
+    width: 200%;
+    padding: 10px 15px;
+    border-radius: 25px 25px;
+    border-color: white;
+    color: white;
+    font-size: 18px;
+    background-color: #1f2123;
+    margin:auto;
+}
