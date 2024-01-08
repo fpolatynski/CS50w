@@ -1,20 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Search</title>
+    <title>Advanced search</title>
+    <link rel="stylesheet" href="advanced_style.css">
 </head>
 <body>
 <nav>
-    <ul>
-        <li><a>Image search</a></li>
-        <li><a>Advanced search</a></li>
-    </ul>
+    <div class="navbar">
+        <ul>
+            <li><a style="color: black;" href="index.html">Google</a></li>
+        </ul>
+    </div>
 </nav>
 <main>
-    <div class="input">
-        <form action="https://google.com/search">
-            <div><input type="text" name="q"></div>
-            <div><input type="submit" value="Google Search"></div>
+    <div class="container">
+        <form action="http://www.google.com/search">
+            <div class="row">
+                <div class="col-20">
+                    <label for="all">all these words:</label>
+                </div>
+                <div class="col-80">
+                    <input id="all" name="as_q" type="text">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-20">
+                    <label for="exact">this exact word or phase:</label>
+                </div>
+                <div class="col-80">
+                    <input id="exact" type="text" name="as_epq">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-20">
+                    <label for="any">any of these words:</label>
+                </div>
+                <div class="col-80">
+                    <input id="any" type="text" name="as_oq">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-20">
+                    <label for="none">none of these words:</label>
+                </div>
+                <div class="col-80">
+                    <input id="none" type="text" name="as_eq">
+                </div>
+            </div>
+            <div class="row">
+                <input type="submit" value="Advanced search">
+            </div>
         </form>
     </div>
 </main>
