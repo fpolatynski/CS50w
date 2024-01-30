@@ -1,0 +1,13 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block body %}
+    {% if content %}
+        {{ content }}
+    {% else %}
+        <h3>Page for {{ title }} does not exist yet :(</h3>
+    {% endif %}
+{% endblock %}

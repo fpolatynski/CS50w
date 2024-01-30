@@ -3,6 +3,24 @@ import re
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
+from typing import List
+
+
+def search_entries(query: str) -> List[str]:
+    all_entries = list_entries()
+    ans = []
+    for x in all_entries:
+        temp = re.findall(query, x)
+        if len(temp) > 0:
+            ans.append(x)
+    return ans
+
+
+# Save markdown text to .md file
+def save_entries(entries_text: str, title: str) -> None:
+    with open("entries/"+title + ".md", "w") as entries:
+        entries.write(entries_text)
+
 
 def list_entries():
     """
