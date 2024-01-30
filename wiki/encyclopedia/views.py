@@ -1,3 +1,6 @@
+import secrets
+import markdown2
+
 from django import forms
 
 from django.shortcuts import render
@@ -22,7 +25,7 @@ def index(request):
 def entry_page(request, entries):
     return render(request, "encyclopedia/entry_page.html", {
         "title": entries,
-        "content": util.get_entry(entries)
+        "content": markdown2.markdown(util.get_entry(entries))
     })
 
 
@@ -53,9 +56,26 @@ def add(request):
 
 
 def edit(request, entries):
-    # TODO: send changes to server
     default_data = {"title": entries, "entries": util.get_entry(entries)}
-    edits = NewEntriesField(default_data)
-    return render(request, "encyclopedia/new_wiki.html", {
-        "form": edits
+    if request.method == 'POST':
+        edits = NewEntriesField(request.POST)
+        if edits.is_valid():
+            edits_text = edits.cleaned_data["entries"]
+            edits_title = edits.cleaned_data["title"]
+            print(edits.cleaned_data)
+            util.save_entry(edits_title, edits_text)
+            return HttpResponseRedirect(reverse("encyclopedia:index"))
+    return render(request, "encyclopedia/edit_wiki.html", {
+        "edit_form": NewEntriesField(initial=default_data),
+        "title": entries,
+    })
+
+
+def random_page(request):
+    entries = util.list_entries()
+    entry = secrets.choice(entries)
+    text = util.get_entry(entry)
+    return render(request, "encyclopedia/entry_page.html",{
+        "title": entry,
+        "content": markdown2.markdown(text)
     })

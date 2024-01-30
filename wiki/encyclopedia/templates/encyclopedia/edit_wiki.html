@@ -1,0 +1,17 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    edit {{ title }}
+{% endblock %}
+
+{% block body %}
+    <ul class="messages">
+</ul>
+    <form action="/{{ title }}/edit" method="post">
+        {% csrf_token %}
+        {{ edit_form }}
+        <input type="submit" value="Update">
+    </form>
+    {% if messages %}
+{% endif %}
+{% endblock %}

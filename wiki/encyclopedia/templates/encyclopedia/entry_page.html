@@ -6,7 +6,8 @@
 
 {% block body %}
     {% if content %}
-        {{ content }}
+        {{ content|safe }}
+        <h3><a href="/{{ title }}/edit">edit</a></h3>
     {% else %}
         <h3>Page for {{ title }} does not exist yet :(</h3>
     {% endif %}
