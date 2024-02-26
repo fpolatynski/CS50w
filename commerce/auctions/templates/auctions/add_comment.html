@@ -1,0 +1,11 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h3>Add comment on {{ listing.name }}</h3>
+    <form action="{% url 'add_comment' listing.id %}" method="POST">
+        {% csrf_token %}
+        <textarea name="text" rows="4" cols="100"></textarea>
+        <input type="submit" value="Post comment">
+    </form>
+    <a href="{% url 'listing' listing.id %}">go back to listing page</a>
+{% endblock %}

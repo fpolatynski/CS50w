@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <table class="table table-striped">
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Photo</th>
+            <th scope="col">current bid</th>
+            <th scope="col">Description</th>
+        </tr>
+        {%  for listing in listings %}
+            <tr>
+                <td><a href="{% url 'listing' listing.id %}">{{ listing.name }}</a></td>
+                <td><img src="{{ listing.image_url }}" alt="{{ listing.name }}" style="height: 140px"></td>
+                <td>{{ listing.current_biggest_bid }}$</td>
+                <td>{{ listing.description }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

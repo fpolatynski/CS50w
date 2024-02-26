@@ -1,0 +1,59 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h1>{{ listing.name }}</h1>
+    <img src="{{ listing.image_url }}" alt="{{ image.name }}" style="height: 300px">
+    <p style="font-size: 20px">Current Bid: {{ listing.current_biggest_bid }}$</p>
+    <h3>Description</h3>
+    <p>{{ listing.description }}</p>
+
+    {% if listing.is_closed %}
+        {% if listing_winner.id == user.id %}
+            <h3>You won this listing !!!</h3>
+        {% else %}
+            <h3>Listing close!!!</h3>
+        {% endif %}
+    {% else %}
+        {% if user.is_authenticated %}
+            <form action="{% url 'listing' listing.id %}" method="post">
+                {% csrf_token %}
+                {% if watchlist %}
+                    <input name="listing_to_watchlist" type="hidden" value="remove">
+                    <input class="btn btn-danger" type="submit" value="Remove from watchlist">
+                {% else %}
+                    <input name="listing_to_watchlist" type="hidden" value="add">
+                    <input class="btn btn-success" type="submit" value="Add to watchlist">
+                {% endif %}
+            </form>
+            <br>
+            <form action="{% url 'listing' listing.id %}" method="post">
+                {% csrf_token %}
+                <h3>Bid</h3>
+                <input name="bid_value" type="number" value="{{ listing.current_biggest_bid }}">
+                <input class="btn btn-primary" type="submit" value="Make a Bid">
+            </form>
+            <br>
+            {% if error %}
+                <h2>Bid is too low</h2>
+            {% endif %}
+            <a href="{% url 'add_comment' listing.id %}">Add comment</a>
+        {% endif %}
+    {% endif %}
+
+    <h3>Comments</h3>
+        <ul>
+            {% for comment in comments %}
+                <li><b>{{ comment.writer }}</b>: {{ comment.text }}</li>
+            {% endfor %}
+        </ul>
+
+
+    {% if user.id == listing.listing_owner_id  and not listing.is_closed%}
+        <form action="{% url 'listing' listing.id %}" method="post">
+        {% csrf_token %}
+        <input name="closure" type="hidden" value="close">
+        <input type="submit" value="Close auction">
+        </form>
+    {% endif %}
+
+{% endblock %}
