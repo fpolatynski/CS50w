@@ -3,9 +3,11 @@
 {% block body %}
     <h1>{{ listing.name }}</h1>
     <img src="{{ listing.image_url }}" alt="{{ image.name }}" style="height: 300px">
-    <p style="font-size: 20px">Current Bid: {{ listing.current_biggest_bid }}$</p>
-    <h3>Description</h3>
-    <p>{{ listing.description }}</p>
+    {% if not user.id == listing_winner.id %}
+        <p style="font-size: 20px">Current Bid: {{ listing.current_biggest_bid }}$</p>
+    {% else %}
+        <p style="font-size: 20px; color:green;">Current Bid: {{ listing.current_biggest_bid }}$</p>
+    {% endif %}
 
     {% if listing.is_closed %}
         {% if listing_winner.id == user.id %}
@@ -39,6 +41,9 @@
             <a href="{% url 'add_comment' listing.id %}">Add comment</a>
         {% endif %}
     {% endif %}
+
+    <h3>Description</h3>
+    <p>{{ listing.description }}</p>
 
     <h3>Comments</h3>
         <ul>
