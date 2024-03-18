@@ -69,6 +69,7 @@ def register(request):
 def add_post(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        # TODO: adding POSTs to database
         print(data)
         return JsonResponse({"message": "Email sent successfully."}, status=201)
 
