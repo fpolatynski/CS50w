@@ -1,0 +1,14 @@
+.post {
+    border: solid;
+    margin:10px;
+
+}
+
+.owner {
+    font-weight: bold;
+    padding: 5px;
+}
+.text {
+    text-align: left;
+    margin: 10px;
+}

@@ -74,3 +74,18 @@ def add_post(request):
         post.save()
         return JsonResponse({"message": "Email sent successfully."}, status=201)
 
+
+def posts(request):
+    start = int(request.GET.get('start'))
+    end = int(request.GET.get('end'))
+    posts_to_display = Post.objects.all().order_by("-timestamp")[start: end]
+    return JsonResponse({
+        "posts": [post.serializes() for post in posts_to_display]
+    })
+
+
+    
+
+
+
+

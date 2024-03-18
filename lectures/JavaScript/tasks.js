@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const task = document.querySelector('#task').value;
 
         const li = document.createElement('li');
-        li.innerHTML=task;
+        li.innerHTML = task;
+        li.className = 'element'
         document.querySelector('#tasks').append(li);
         document.querySelector('#task').value = '';
         document.querySelector("#submit").disabled = true;

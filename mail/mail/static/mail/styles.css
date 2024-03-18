@@ -1,3 +1,18 @@
 textarea {
     min-height: 400px;
 }
+
+.mail {
+    border-style: solid;
+    padding:5px;
+}
+
+.mail-read {
+    border-style: solid;
+    padding:5px;
+    background-color: lightgray;
+}
+
+.time {
+    float: right;
+}
