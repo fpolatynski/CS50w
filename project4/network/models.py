@@ -19,3 +19,14 @@ class Post(models.Model):
     def __str__(self):
         return f"{self.owner} post at {self.timestamp}"
 
+    # API to return the post in JSON format
+    def serializes(self):
+        return {
+            "id": self.id,
+            "text": self.text,
+            "owner": self.owner.username,
+            "timestamp": self.timestamp,
+            "likes": self.likes.count(),
+            "unlikes": self.unlikes.count()
+        }
+
