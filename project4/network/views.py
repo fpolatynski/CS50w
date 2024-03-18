@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import User
+from .models import User, Post
 
 
 def index(request):
@@ -69,7 +69,8 @@ def register(request):
 def add_post(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        # TODO: adding POSTs to database
-        print(data)
+        # Adding POSTs to database
+        post = Post(text=data["text"], owner=request.user)
+        post.save()
         return JsonResponse({"message": "Email sent successfully."}, status=201)
 
