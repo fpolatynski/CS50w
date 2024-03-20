@@ -48,14 +48,27 @@ function display(data){
         post_div.append(com_div);
         document.querySelector("#all_posts").append(post_div);
     })
-    start += amount;
+    start += amount + 1;
 }
 
 function newMails(){
     fetch(`posts?start=${start}&end=${start + amount}`)
         .then(response => response.json())
         .then(data => {
-            display(data)
+            display(data);
             });
+}
+
+let is_fetching = false;
+
+window.onscroll = () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
+        if (!is_fetching) {
+            is_fetching = true;
+            console.log('start')
+            newMails();
+        } else {
+        is_fetching = false;
+    }}
 }
 
