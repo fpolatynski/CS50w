@@ -8,6 +8,14 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    def serializes(self):
+        return {
+            "id": self.id,
+            "followers": self.followers.count(),
+            "following": self.follows.count(),
+            "username": self.username
+        }
+
 
 class Post(models.Model):
     text = models.TextField(max_length=512)
@@ -24,7 +32,7 @@ class Post(models.Model):
         return {
             "id": self.id,
             "text": self.text,
-            "owner": self.owner.username,
+            "owner": self.owner.serializes(),
             "timestamp": self.timestamp,
             "likes": self.likes.count(),
             "unlikes": self.unlikes.count()

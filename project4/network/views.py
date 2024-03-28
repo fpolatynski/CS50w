@@ -85,8 +85,5 @@ def posts(request):
     })
 
 
-    
-
-
-
-
+def profile_page(request, user_id):
+    user = User.objects.get(pk=user_id)
