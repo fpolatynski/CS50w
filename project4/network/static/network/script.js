@@ -15,9 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     newMails()
 });
 
-let start = 0;
-let amount = 5;
-
 function display(data){
     data["posts"].forEach(post => {
         const post_div = document.createElement('div');
@@ -51,24 +48,11 @@ function display(data){
     start += amount + 1;
 }
 
+let page = 1
 function newMails(){
-    fetch(`posts?start=${start}&end=${start + amount}`)
+    fetch(`posts?page=${page}`)
         .then(response => response.json())
         .then(data => {
             display(data);
             });
 }
-
-let is_fetching = false;
-
-window.onscroll = () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
-        if (!is_fetching) {
-            is_fetching = true;
-            console.log('start')
-            newMails();
-        } else {
-        is_fetching = false;
-    }}
-}
-

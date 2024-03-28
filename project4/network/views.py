@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 
 from .models import User, Post
 
@@ -77,13 +78,19 @@ def add_post(request):
 
 
 def posts(request):
-    start = int(request.GET.get('start'))
-    end = int(request.GET.get('end'))
-    posts_to_display = Post.objects.all().order_by("-timestamp")[start: end]
+    page = int(request.GET.get('page'))
+    user = request.GET.get('owner')
+    if user is None:
+        posts_to_display = Post.objects.all().order_by("-timestamp")
+    else:
+        posts_to_display = Post.objects.filter(owner_id=int(user)).order_by("-timestamp")
+    paginator = Paginator(posts_to_display, 10)
+
     return JsonResponse({
-        "posts": [post.serializes() for post in posts_to_display]
+        "posts": [x.serializes() for x in paginator.get_page(page).object_list]
     })
 
 
 def profile_page(request, user_id):
     user = User.objects.get(pk=user_id)
+    return render(request, "network/user_page.html", user.serializes())
