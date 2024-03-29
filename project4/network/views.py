@@ -93,4 +93,15 @@ def posts(request):
 
 def profile_page(request, user_id):
     user = User.objects.get(pk=user_id)
-    return render(request, "network/user_page.html", user.serializes())
+    cur_user = request.user
+    if request.method == "POST":
+        if_follow = request.POST.get("follow")
+        if if_follow == "follow":
+            cur_user.follows.add(user)
+        elif if_follow == "unfollow":
+            cur_user.follows.remove(user)
+
+    follow = user.followers.filter(pk=request.user.id)
+    return render(request, "network/user_page.html", user.serializes() | {
+        "follow": len(follow)
+    })

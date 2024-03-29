@@ -3,6 +3,7 @@
 
 {% block imports %}
     <script src="{% static 'network/script.js' %}"></script>
+    <script src="{% static 'network/user.js' %}"></script>
 {% endblock %}
 
 
@@ -12,6 +13,15 @@
     <h1>{{ username }}</h1>
     Followers: {{ followers }}
     Following: {{ following }}
+    <form method="post" action="{{ user_id }}">
+    {% csrf_token %}
+    {% if not follow %}
+        <input name="follow" type="hidden" value="follow">
+        <input type="submit" value="Follow">
+    {% else %}
+        <input name="follow" type="hidden" value="unfollow">
+        <input type="submit" value="Unfollow">
+    {% endif %}</form>
     <h2>Posts:</h2>
 
     <div id="all_posts"></div>

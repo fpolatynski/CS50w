@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
             text_div.innerHTML = post.text;
             owner_div.innerHTML = `<a href=\"${post.owner.id}\">${post.owner.username}</a>`;
             like_div.innerHTML = `<i class=\"bi-hand-thumbs-up\" style=\"font-size: 1.8rem;\"></i> ${post.likes}`;
-            com_div.innerHTML = "<a>comments</a>";
+            com_div.innerHTML = "<a href=\"https://github.com/fpolatynski\">comments</a>";
             date_div.innerHTML = post.timestamp.toString().split('T')[0];
 
             post_div.append(owner_div);
