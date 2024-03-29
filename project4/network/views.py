@@ -15,6 +15,10 @@ def index(request):
     return render(request, "network/index.html")
 
 
+def following(request):
+    return render(request, "network/index.html")
+
+
 def login_view(request):
     if request.method == "POST":
 
@@ -83,7 +87,11 @@ def posts(request):
     if user is None:
         posts_to_display = Post.objects.all().order_by("-timestamp")
     else:
-        posts_to_display = Post.objects.filter(owner_id=int(user)).order_by("-timestamp")
+        if user == "f":
+            follows = request.user.follows.all()
+            posts_to_display = Post.objects.filter(owner_id__in=follows).order_by("-timestamp")
+        else:
+            posts_to_display = Post.objects.filter(owner_id=int(user)).order_by("-timestamp")
     paginator = Paginator(posts_to_display, 10)
 
     return JsonResponse({
@@ -103,5 +111,6 @@ def profile_page(request, user_id):
 
     follow = user.followers.filter(pk=request.user.id)
     return render(request, "network/user_page.html", user.serializes() | {
-        "follow": len(follow)
+        "follow": len(follow),
+        "f": "False"
     })

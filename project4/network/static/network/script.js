@@ -1,4 +1,3 @@
-
 // When DOM content is loaded
 document.addEventListener('DOMContentLoaded', () => {
     const user_id = document.getElementById('user_id');
@@ -20,8 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
     }
 
-    let page = 1
-    newMails()
+    let page = 1;
+    newMails();
 
     document.querySelector("#next").onclick = () => {
         page += 1;
@@ -41,7 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
             to_fetch = `posts?page=${page}&owner=${id}`
         }
         else{
-            to_fetch = `posts?page=${page}`
+            if (false){
+                to_fetch = `posts?page=${page}&owner=f`
+            }
+            else{
+                to_fetch = `posts?page=${page}`
+            }
+
         }
         fetch(to_fetch)
             .then(response => response.json())
