@@ -11,5 +11,4 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector(`#${button.dataset.page}`).style.display = 'block';
         }
     });
-
 });
