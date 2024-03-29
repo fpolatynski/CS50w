@@ -1,17 +1,24 @@
 
 // When DOM content is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Add onsubmit function
-    document.querySelector('#asd').onclick = () =>{
-            const text = document.querySelector("#new_post-text").value;
-            fetch("/new_post", {
-                method: 'POST',
-                body: JSON.stringify({
-                    text: text
+    const user_id = document.getElementById('user_id');
+    let id = 1;
+    if (user_id){
+        id = JSON.parse(user_id.textContent);
+    }
+    else{
+        // Add onsubmit function
+        document.querySelector('#asd').onclick = () =>{
+                const text = document.querySelector("#new_post-text").value;
+                fetch("/new_post", {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        text: text
+                    })
                 })
-            })
-            document.querySelector("#new_post-text").value = "";
-        }
+                document.querySelector("#new_post-text").value = "";
+            }
+    }
 
     let page = 1
     newMails()
@@ -29,7 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function newMails(){
-        fetch(`posts?page=${page}`)
+        let to_fetch = "";
+        if (user_id){
+            to_fetch = `posts?page=${page}&owner=${id}`
+        }
+        else{
+            to_fetch = `posts?page=${page}`
+        }
+        fetch(to_fetch)
             .then(response => response.json())
             .then(data => {
                 display(data);
