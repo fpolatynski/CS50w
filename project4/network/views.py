@@ -113,3 +113,12 @@ def profile_page(request, user_id):
     return render(request, "network/user_page.html", user.serializes() | {
         "follow": len(follow)
     })
+
+
+def like(request):
+    if request.method == "POST":
+        post_id = request.POST.get("post_id")
+        if post_id:
+            request.user.liked_posts.add(Post.objects.get(pk=post_id))
+        else:
+            print("Does not  provide post to like")
