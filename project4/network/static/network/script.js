@@ -1,9 +1,5 @@
 // When DOM content is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    const emoji = document.querySelector("#ablk");
-            emoji.addEventListener("", ()=>{
-                emoji.className = "bi-hand-thumbs-up-fill";
-            })
     const user_id = document.getElementById('user_id');
     let id = 1;
     if (user_id){
@@ -74,12 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             text_div.innerHTML = post.text;
             owner_div.innerHTML = `<a href=\"${post.owner.id}\">${post.owner.username}</a> ${post.id}`;
-            like_div.innerHTML = `<i class=\"bi-hand-thumbs-up\" style=\"font-size: 1.8rem;\"></i> ${post.likes}`;
+            like_div.innerHTML = `<i id=\"a${post.id}\" class=\"bi-hand-thumbs-up\" style=\"font-size: 1.8rem;\"></i> ${post.likes}`;
             com_div.innerHTML = "<a href=\"https://github.com/fpolatynski\">comments</a>";
-            const emoji = document.querySelector(`#id${post.id}`);
-            emoji.addEventListener("mouseenter", ()=>{
-                emoji.className = "bi-hand-thumbs-up-fill";
-            })
             date_div.innerHTML = post.timestamp.toString().split('T')[0];
 
             post_div.append(owner_div);
@@ -88,6 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
             post_div.append(like_div);
             post_div.append(com_div);
             document.querySelector("#all_posts").append(post_div);
+
+            let emoji = document.querySelector(`#a${post.id}`);
+            console.log(emoji)
+            emoji.addEventListener("click", ()=>{
+                emoji.className = "bi-hand-thumbs-up-fill";
+            })
         })
     }
 });
