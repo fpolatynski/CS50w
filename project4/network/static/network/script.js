@@ -2,21 +2,20 @@
 document.addEventListener('DOMContentLoaded', () => {
     const user_id = document.getElementById('user_id');
     let id = 1;
-    if (user_id){
+    if (user_id) {
         id = JSON.parse(user_id.textContent);
-    }
-    else{
+    } else {
         // Add onsubmit function
-        document.querySelector('#asd').onclick = () =>{
-                const text = document.querySelector("#new_post-text").value;
-                fetch("/new_post", {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        text: text
-                    })
+        document.querySelector('#asd').onclick = () => {
+            const text = document.querySelector("#new_post-text").value;
+            fetch("/new_post", {
+                method: 'POST',
+                body: JSON.stringify({
+                    text: text
                 })
-                document.querySelector("#new_post-text").value = "";
-            }
+            })
+            document.querySelector("#new_post-text").value = "";
+        }
     }
 
     let page = 1;
@@ -28,30 +27,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.querySelector("#previous").onclick = () => {
-        if (page > 1){
+        if (page > 1) {
             page -= 1;
             newMails();
         }
     }
 
-    function newMails(){
+    function newMails() {
         let to_fetch = "";
-        if (user_id){
+        if (user_id) {
             to_fetch = `posts?page=${page}&owner=${id}`
-        }
-        else{
-                to_fetch = `posts?page=${page}`
+        } else {
+            to_fetch = `posts?page=${page}`
         }
         fetch(to_fetch)
             .then(response => response.json())
             .then(data => {
                 display(data);
-                });
+                console.log(data)
+            });
         window.scrollTo(0, 0);
     }
 
-    function display(data){
+    function display(data) {
         document.querySelector("#all_posts").innerHTML = "";
+        const user = data["user"]
         data["posts"].forEach(post => {
             const post_div = document.createElement('div');
             post_div.className = 'post';
@@ -70,7 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             text_div.innerHTML = post.text;
             owner_div.innerHTML = `<a href=\"${post.owner.id}\">${post.owner.username}</a> ${post.id}`;
-            like_div.innerHTML = `<i id=\"a${post.id}\" class=\"bi-hand-thumbs-up\" style=\"font-size: 1.8rem;\"></i> ${post.likes}`;
+            if (post.likers.includes(user.id)) {
+                like_div.innerHTML = `<i id=\"a${post.id}\" class=\"bi-hand-thumbs-up-fill\" style=\"font-size: 1.8rem;\"></i> ${post.likes}`;
+            } else {
+                like_div.innerHTML = `<i id=\"a${post.id}\" class=\"bi-hand-thumbs-up\" style=\"font-size: 1.8rem;\"></i> ${post.likes}`;
+            }
             com_div.innerHTML = "<a href=\"https://github.com/fpolatynski\">comments</a>";
             date_div.innerHTML = post.timestamp.toString().split('T')[0];
 
@@ -80,12 +84,44 @@ document.addEventListener('DOMContentLoaded', () => {
             post_div.append(like_div);
             post_div.append(com_div);
             document.querySelector("#all_posts").append(post_div);
+            if (post.likers.includes(user.id)) {
+                like_div.innerHTML = `<i id=\"a${post.id}\" class=\"bi-hand-thumbs-up-fill\" style=\"font-size: 1.8rem;\"></i> ${post.likes}`;
+            } else {
+                like_div.innerHTML = `<i id=\"a${post.id}\" class=\"bi-hand-thumbs-up\" style=\"font-size: 1.8rem;\"></i> ${post.likes}`;
+            }
 
             let emoji = document.querySelector(`#a${post.id}`);
-            console.log(emoji)
-            emoji.addEventListener("click", ()=>{
-                emoji.className = "bi-hand-thumbs-up-fill";
+            add_listiner(emoji, post, user, like_div)
+        })
+    }
+})
+
+function add_listiner(emoji, post, user, like_div){
+    if (post.likers.includes(user.id)) {
+        emoji.addEventListener("click", () => {
+            like_div.innerHTML = `<i id=\"a${post.id}\" class=\"bi-hand-thumbs-up\" style=\"font-size: 1.8rem;\"></i> ${post.likes - 1}`;
+            fetch("/like", {
+                'method': 'POST',
+                'body': JSON.stringify({
+                        'post_id': post.id,
+                        'like': false
+                    }
+                )
+            })
+
+        })
+    } else {
+        emoji.addEventListener("click", () => {
+            like_div.innerHTML = `<i id=\"a${post.id}\" class=\"bi-hand-thumbs-up-fill\" style=\"font-size: 1.8rem;\"></i> ${post.likes + 1}`;
+            fetch("/like", {
+                'method': 'POST',
+                'body': JSON.stringify({
+                        'post_id': post.id,
+                        'like': true
+                    }
+                )
             })
         })
     }
-});
+}
+

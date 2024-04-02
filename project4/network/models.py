@@ -35,6 +35,7 @@ class Post(models.Model):
             "owner": self.owner.serializes(),
             "timestamp": self.timestamp,
             "likes": self.likes.count(),
-            "unlikes": self.unlikes.count()
+            "unlikes": self.unlikes.count(),
+            "likers": [x.id for x in self.likes.all()]
         }
 

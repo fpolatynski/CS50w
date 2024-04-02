@@ -12,11 +12,11 @@ from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html")
+    return render(request, "network/index.html", {"user": request.user.id})
 
 
 def following(request):
-    return render(request, "network/following.html")
+    return render(request, "network/following.html", {"user": request.user.id})
 
 
 def login_view(request):
@@ -95,7 +95,8 @@ def posts(request):
     paginator = Paginator(posts_to_display, 10)
 
     return JsonResponse({
-        "posts": [x.serializes() for x in paginator.get_page(page).object_list]
+        "posts": [x.serializes() for x in paginator.get_page(page).object_list],
+        "user": request.user.serializes()
     })
 
 
@@ -111,14 +112,22 @@ def profile_page(request, user_id):
 
     follow = user.followers.filter(pk=request.user.id)
     return render(request, "network/user_page.html", user.serializes() | {
-        "follow": len(follow)
+        "follow": len(follow),
+        "user": request.user.id
     })
 
 
+@csrf_exempt
 def like(request):
     if request.method == "POST":
-        post_id = request.POST.get("post_id")
+        data = json.loads(request.body)
+        post_id = int(data["post_id"])
+        is_like = data["like"]
         if post_id:
-            request.user.liked_posts.add(Post.objects.get(pk=post_id))
+            if is_like:
+                request.user.liked_posts.add(Post.objects.get(pk=post_id))
+            else:
+                request.user.liked_posts.remove(Post.objects.get(pk=post_id))
+            return JsonResponse({'answear': "Liked sucesfully"}, status=201)
         else:
-            print("Does not  provide post to like")
+            return JsonResponse({'answear': "Something went wrong"}, status=201)
