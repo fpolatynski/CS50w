@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function display(data) {
         document.querySelector("#all_posts").innerHTML = "";
-        const user = data["user"]
+        const user = data["current_user"]
         data["posts"].forEach(post => {
             const post_div = document.createElement('div');
             post_div.className = 'post';

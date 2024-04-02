@@ -12,11 +12,11 @@ from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html", {"user": request.user.id})
+    return render(request, "network/index.html", {"current_user": request.user.id})
 
 
 def following(request):
-    return render(request, "network/following.html", {"user": request.user.id})
+    return render(request, "network/following.html", {"current_user": request.user.id})
 
 
 def login_view(request):
@@ -96,7 +96,7 @@ def posts(request):
 
     return JsonResponse({
         "posts": [x.serializes() for x in paginator.get_page(page).object_list],
-        "user": request.user.serializes()
+        "current_user": request.user.serializes()
     })
 
 
@@ -113,7 +113,7 @@ def profile_page(request, user_id):
     follow = user.followers.filter(pk=request.user.id)
     return render(request, "network/user_page.html", user.serializes() | {
         "follow": len(follow),
-        "user": request.user.id
+        "current_user": request.user.id
     })
 
 
