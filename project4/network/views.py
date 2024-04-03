@@ -74,6 +74,7 @@ def register(request):
 def add_post(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        print(data["text"])
         # Adding POSTs to database
         post = Post(text=data["text"], owner=request.user)
         post.save()

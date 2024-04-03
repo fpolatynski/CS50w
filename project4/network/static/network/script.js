@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add onsubmit function
         document.querySelector('#asd').onclick = () => {
             const text = document.querySelector("#new_post-text").value;
+            console.log(text)
             fetch("/new_post", {
                 method: 'POST',
                 body: JSON.stringify({
@@ -67,8 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             date_div.className = 'date';
             const edit_div = document.createElement('div');
             edit_div.className = 'edit';
-
-            text_div.innerHTML = post.text;
+            text_div.innerHTML = post.text.replaceAll("\n", "<br>");
             owner_div.innerHTML = `<a href=\"${post.owner.id}\">${post.owner.username}</a> ${post.id}`;
             if (post.likers.includes(user.id)) {
                 like_div.innerHTML = `<i id=\"a${post.id}\" class=\"bi-hand-thumbs-up-fill\" style=\"font-size: 1.8rem;\"></i> ${post.likes}`;
