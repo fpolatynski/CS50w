@@ -73,12 +73,23 @@ def register(request):
 @csrf_exempt
 def add_post(request):
     if request.method == 'POST':
+        print(request.body)
         data = json.loads(request.body)
-        print(data["text"])
         # Adding POSTs to database
         post = Post(text=data["text"], owner=request.user)
         post.save()
         return JsonResponse({"message": "Email sent successfully."}, status=201)
+
+
+@csrf_exempt
+def edit_post(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        post = Post.objects.get(pk=int(data["post_id"]))
+        post.text = data["text"]
+        post.save()
+        return JsonResponse({"messege": "Updated successfully"})
+
 
 
 def posts(request):

@@ -1,13 +1,13 @@
 .post {
     border: solid;
-    margin:10px;
+    margin: 10px;
 
 }
 
 .owner {
     font-weight: bold;
     padding: 5px;
-    margin: 5px;
+    margin: 10px;
 }
 
 .text {
@@ -16,20 +16,34 @@
 }
 
 .like {
-    margin:5px;
+    margin:10px;
     padding:5px;
 }
 
 .com {
-    margin: 5px;
+    margin: 10px;
 }
 
 .date {
-    margin: 5px;
+    margin: 10px;
 }
 
 #new_post {
     margin: 10px;
 }
 
+.edit{
+    margin:10px;
+}
 
+.foll{
+    margin: 10px;
+}
+
+h1{
+    margin:10px;
+}
+
+p{
+    margin:10px;
+}

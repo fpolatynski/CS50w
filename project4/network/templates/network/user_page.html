@@ -11,16 +11,16 @@
 {% block body %}
     <div id="user_id" style="display: none">{{ id }}</div>
     <h1>{{ username }}</h1>
-    Followers: {{ followers }}
-    Following: {{ following }}
+    <p>Followers: {{ followers }}</p>
+    <p>Following: {{ following }}</p>
     <form method="post" action="{{ user_id }}">
     {% csrf_token %}
     {% if not follow %}
         <input name="follow" type="hidden" value="follow">
-        <input type="submit" value="Follow">
+        <input type="submit" class="foll btn btn-success" value="Follow">
     {% else %}
         <input name="follow" type="hidden" value="unfollow">
-        <input type="submit" value="Unfollow">
+        <input type="submit" class="foll btn btn-danger" value="Unfollow">
     {% endif %}</form>
     <h2>Posts:</h2>
 

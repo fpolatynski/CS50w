@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const edit_div = document.createElement('div');
             edit_div.className = 'edit';
 
-            text_div.innerHTML = post.text;
+            text_div.innerHTML = post.text.replaceAll("\n", "<br>");
             owner_div.innerHTML = `<a href=\"${post.owner.id}\">${post.owner.username}</a>`;
             com_div.innerHTML = "<a href=\"https://github.com/fpolatynski\">comments</a>";
             date_div.innerHTML = post.timestamp.toString().split('T')[0];
